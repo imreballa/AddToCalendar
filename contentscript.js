@@ -74,15 +74,15 @@ function addToCalendar() {
 
     // based on this input format from Facebook: time = "2018-10-04T12:00:00-07:00 to 2018-10-04T14:00:00-07:00"
 
-    var startTime = new Date(time.substring(0, time.indexOf('to') - 7));
+    var startTime = new Date(time.substring(0, time.indexOf('to') - 1));
     //console.log("Start time: " + startTime);
 
-    var endTime = new Date(time.substring(time.indexOf('to') + 3, time.length - 6));
+    var endTime = new Date(time.substring(time.indexOf('to') + 3, time.length));
     //console.log("End time: " + endTime);
 
   } else {
     // Set end time equal to start time + 1 hour
-    var startTime = new Date(time.substring(0, time.length - 6));
+    var startTime = new Date(time);
     var endTime = new Date(startTime.getTime());
     endTime.addHours(1);
   }
