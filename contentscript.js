@@ -17,6 +17,14 @@ function gotMessage(request, sender, sendResponse) {
 
 /* Adds event information onto google calendar event and registers API calls? */
 function addToCalendar() {
+    // FB tag variables
+    var titleTagFb = "seo_h1_tag";
+    var timeTagFb = "_2ycp _5xhk";
+    var locationTagFbFull = "_5xhp fsm fwn fcg";
+    var locationTagFbShort = "_5xhk";
+    var locationTagFbAlternate = "u_0_18";
+    var detailsTagFb = "_63ew";
+
   if (window.location.href.includes("/calendar.google.com")) {
     // Don't do anything if we are on the google calendar page. This triggers because the url
     // has the facebook event link in it, making the icon active.
@@ -24,14 +32,14 @@ function addToCalendar() {
   }
   // Do some crude webscraping to avoid needing user permissions to access event info.
   try {
-    var title = document.getElementById("seo_h1_tag").textContent;
+    var title = document.getElementById(titleTagFb).textContent;
   } catch (e) {
     alert("Please wait for the title to load. - AddToCalendar Bot");
     return;
   }
 
   try {
-    var time = document.getElementsByClassName("_2ycp _5xhk")[0].getAttribute("content");
+    var time = document.getElementsByClassName(timeTagFb)[0].getAttribute("content");
   } catch (e) {
     alert("Please wait for the time to load. - AddToCalendar Bot");
     return;
@@ -39,15 +47,15 @@ function addToCalendar() {
 
   try {
     // Second senario for location is for event pages with multiple dates (bugs out when there is no location as u_0_18 gets replaced by something else)
-    var location = document.getElementsByClassName("_5xhp fsm fwn fcg")[1].textContent ||
-      document.getElementsByClassName("_5xhk")[1].textContent ||
-      document.getElementsByClassName("_5xhp fsm fwn fcg")[2].textContent ||
-      document.getElementById("u_0_18").textContent;
+    var location = document.getElementsByClassName(locationTagFbFull)[1].textContent ||
+      document.getElementsByClassName(locationTagFbShort)[1].textContent ||
+      document.getElementsByClassName(locationTagFbFull)[2].textContent ||
+      document.getElementById(locationTagFbAlternate).textContent;
 
     // Check if we accidentally got the wrong value for location (e.g. location = OCT12Fri8:00 PMOCT13Sat8:00 PMOCT14Sun5:00 PM 3)
     if (location.includes(":")) {
-      location = document.getElementsByClassName("_5xhp fsm fwn fcg")[2].textContent ||
-      document.getElementById("u_0_18").textContent;
+      location = document.getElementsByClassName(locationTagFbFull)[2].textContent ||
+      document.getElementById(locationTagFbAlternate).textContent;
     }
 
   } catch (e) {
@@ -55,7 +63,7 @@ function addToCalendar() {
   }
 
   try {
-  	var details = document.getElementsByClassName("_63ew") ? document.getElementsByClassName("_63ew")[0].innerText : null;
+  	var details = document.getElementsByClassName(detailsTagFb) ? document.getElementsByClassName(detailsTagFb)[0].innerText : null;
   } catch (e) {
   	alert('Please click the "About" tab on this event page if you want to add event details to your calendar. - AddToCalendar Bot');
   	var details = "";
